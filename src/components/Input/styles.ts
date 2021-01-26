@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 interface InputWrapperProps {
   isFocused: boolean;
   isFilled: boolean;
+  isErrored: boolean;
 }
 
 export const InputWrapper = styled.div<InputWrapperProps>`
@@ -20,6 +21,13 @@ export const InputWrapper = styled.div<InputWrapperProps>`
   & + div {
     margin-top: 8px;
   }
+
+  // se o input tiver algum erro
+  ${(props) =>
+    props.isErrored &&
+    css`
+      border-color: #c53030;
+    `}
 
   ${(props) =>
     props.isFocused &&
@@ -49,5 +57,14 @@ export const InputWrapper = styled.div<InputWrapperProps>`
 
   svg {
     margin-right: 8px;
+  }
+`;
+
+export const Error = styled.div`
+  height: 20px; //tamanho do icon
+  margin-left: 15px;
+
+  svg {
+    margin: 0;
   }
 `;

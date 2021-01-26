@@ -6,9 +6,10 @@ import React, {
   useCallback,
 } from "react";
 import { IconBaseProps } from "react-icons"; // propriedades que um icone pode ter
+import { FiAlertCircle } from "react-icons/fi";
 import { useField } from "@unform/core";
 
-import { InputWrapper } from "./styles";
+import { InputWrapper, Error } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   // pra que as props herdem todas as propriedades de um input comum
@@ -47,7 +48,11 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
   }, []);
 
   return (
-    <InputWrapper isFilled={isFilled} isFocused={isFocused}>
+    <InputWrapper
+      isErrored={Boolean(error)}
+      isFilled={isFilled}
+      isFocused={isFocused}
+    >
       {Icon && <Icon size={20} />}
       <input
         onFocus={handleInputFocus}
@@ -57,7 +62,11 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
         {...props}
       />
 
-      {error}
+      {error && (
+        <Error>
+          <FiAlertCircle color="#c53030" size={20} />
+        </Error>
+      )}
     </InputWrapper>
   );
 };
