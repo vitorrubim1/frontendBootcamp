@@ -1,4 +1,10 @@
-import React, { InputHTMLAttributes, useEffect, useRef } from "react";
+import React, {
+  InputHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { IconBaseProps } from "react-icons"; // propriedades que um icone pode ter
 import { useField } from "@unform/core";
 
@@ -11,7 +17,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null); // HTMLInputElement: typando pra ter acesso a informação no callback, pra saber se está preenchido ou não
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false); // pra ver ser o input tá preenchido ou não
 
   // lógica de registo do unform
   const { fieldName, defaultValue, error, registerField } = useField(name); // hook do unform
@@ -25,10 +34,28 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
     });
   }, [fieldName, registerField]);
 
+  const handleInputFocus = useCallback(() => {
+    // tornando callback pra ser criada somente uma vez
+    setIsFocused(true);
+  }, []);
+
+  const handleInputBlur = useCallback(() => {
+    setIsFocused(false);
+
+    // pra ver se algum input que perdeu foco, foi preenchido, pra deixar a estilização diferente
+    setIsFilled(!!inputRef.current?.value); // se tiver valor é true, se não é false
+  }, []);
+
   return (
-    <InputWrapper>
+    <InputWrapper isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
-      <input defaultValue={defaultValue} ref={inputRef} {...props} />
+      <input
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+        defaultValue={defaultValue}
+        ref={inputRef}
+        {...props}
+      />
     </InputWrapper>
   );
 };

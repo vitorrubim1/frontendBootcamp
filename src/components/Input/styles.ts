@@ -1,6 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const InputWrapper = styled.div`
+interface InputWrapperProps {
+  isFocused: boolean;
+  isFilled: boolean;
+}
+
+export const InputWrapper = styled.div<InputWrapperProps>`
   background: #232129;
   border-radius: 10px;
   border: 2px solid #233129;
@@ -15,6 +20,20 @@ export const InputWrapper = styled.div`
   & + div {
     margin-top: 8px;
   }
+
+  ${(props) =>
+    props.isFocused &&
+    css`
+      border-color: #ff9000;
+      color: #ff9000; //icon
+    `}
+
+  // se o input tiver preenchido e perder o foco
+  ${(props) =>
+    props.isFilled &&
+    css`
+      color: #ff9000; //icon
+    `}
 
   input {
     color: #f4ede8;
