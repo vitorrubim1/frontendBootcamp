@@ -1,5 +1,7 @@
-import React, { InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes, useEffect, useRef } from "react";
 import { IconBaseProps } from "react-icons"; // propriedades que um icone pode ter
+import { useField } from "@unform/core";
+
 import { InputWrapper } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -8,11 +10,25 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>; // React.ComponentType: quando eu recebo um componente como propriedade <IconBaseProps> é os props do icon
 }
 
-const Input: React.FC<InputProps> = ({ icon: Icon, ...props }) => {
+const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
+  const inputRef = useRef(null);
+
+  // lógica de registo do unform
+  const { fieldName, defaultValue, error, registerField } = useField(name); // hook do unform
+
+  useEffect(() => {
+    registerField({
+      // registerField: é o valor do input de fato, dentro do hook do unform
+      name: fieldName, // fieldName: pq o unform manipula os nomes e retorna um especifico pra cada
+      ref: inputRef.current, // inputRef.current: referência na DOM
+      path: "value", // tendo o input, aonde de fato encontro o valor
+    });
+  }, [fieldName, registerField]);
+
   return (
     <InputWrapper>
       {Icon && <Icon size={20} />}
-      <input {...props} />
+      <input defaultValue={defaultValue} ref={inputRef} {...props} />
     </InputWrapper>
   );
 };
