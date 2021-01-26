@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { shade } from "polished";
 
-import signInBackgroundImg from "../assets/sign-in-background.png";
+import signUpBackgroundImg from "../assets/sign-up-background.png";
 
 export const Container = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ export const Content = styled.div`
 
   > a {
     // ">": somente a tag em si, dentro do content, não estilizar os demais
-    color: #ff9000;
+    color: #f4ede8;
     display: block;
     margin-top: 20px;
     text-decoration: none;
@@ -53,7 +53,6 @@ export const Content = styled.div`
     align-items: center;
 
     transition: color 200ms;
-
     svg {
       margin-right: 10px;
     }
@@ -66,6 +65,6 @@ export const Content = styled.div`
 
 export const Background = styled.div`
   flex: 1; //ocupar todo espaço disponivel
-  background: url(${signInBackgroundImg}) no-repeat center;
+  background: url(${signUpBackgroundImg}) no-repeat center;
   background-size: cover; //pra cobrir todo espaço disponivel com a imagem
 `;
