@@ -2,15 +2,15 @@ import React from "react";
 
 import GlobalStyles from "./styles/global";
 
-import Signin from "./Signin";
-import Signup from "./Signup";
+// import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const App: React.FC = () => {
   return (
     <>
       <GlobalStyles />
-      {/* <Signin /> */}
-      <Signup />
+      {/* <SignIn /> */}
+      <SignUp />
     </>
   );
 };
