@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 
+import Tooltip from "../Tooltip";
+
 interface InputWrapperProps {
   isFocused: boolean;
   isFilled: boolean;
@@ -60,9 +62,11 @@ export const InputWrapper = styled.div<InputWrapperProps>`
   }
 `;
 
-export const Error = styled.div`
+export const Error = styled(Tooltip)`
   height: 20px; //tamanho do icon
   margin-left: 15px;
+
+  cursor: pointer;
 
   svg {
     margin: 0;
