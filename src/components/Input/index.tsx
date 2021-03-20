@@ -14,7 +14,7 @@ import { InputWrapper, Error } from "./styles";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   // pra que as props herdem todas as propriedades de um input comum
   name: string; // InputHTMLAttributes: por padrão o name não é obrigatório, na interface eu faço com que seja
-  icon?: React.ComponentType<IconBaseProps>; // React.ComponentType: quando eu recebo um componente como propriedade <IconBaseProps> é os props do icon
+  icon?: React.ComponentType<IconBaseProps>; // React.ComponentType: quando eu recebo um componente como propriedade <IconBaseProps> é as props do icon
 }
 
 const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {

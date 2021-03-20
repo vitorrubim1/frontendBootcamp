@@ -1,8 +1,10 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useContext } from "react";
 import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core"; // typagem da referencia do formulario
+
+import { AuthContext } from "../context/AuthContext";
 
 import getValidationErrors from "../utils/getValidationsErrors";
 
@@ -13,30 +15,42 @@ import Button from "../components/Button";
 
 import { Container, Content, Background } from "./styles";
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const { signIn } = useContext(AuthContext);
+
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({}); // zerando os erros
+  const handleSubmit = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({}); // zerando os erros
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required("Email obrigatório")
-          .email("Digite um email válido"),
-        password: Yup.string().required("Senha obrigatória"),
-      });
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required("Email obrigatório")
+            .email("Digite um email válido"),
+          password: Yup.string().required("Senha obrigatória"),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false, // pra retornar todos os erros de uma vez
-      }); // dados q recebi do input
-    } catch (error) {
-      const errors = getValidationErrors(error);
+        await schema.validate(data, {
+          abortEarly: false, // pra retornar todos os erros de uma vez
+        }); // dados q recebi do input
 
-      formRef.current?.setErrors(errors); // formRef: referencia do formulario. current: valor das informações
-    }
-  }, []);
+        signIn({ email: data.email, password: data.password });
+      } catch (error) {
+        const errors = getValidationErrors(error);
+
+        formRef.current?.setErrors(errors); // formRef: referencia do formulario. current: valor das informações
+      }
+    },
+    [signIn]
+  );
 
   return (
     <Container>
