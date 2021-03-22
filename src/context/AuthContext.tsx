@@ -1,9 +1,11 @@
-import React, { createContext, useCallback, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 import { api } from "../services/api";
 
+import User from "../dtos/IUser";
+
 interface AuthContextData {
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
 }
 
@@ -14,14 +16,12 @@ interface SignInCredentials {
 
 interface AuthState {
   token: string;
-  user: object; // não defino exatamente, pq a api pode mudar os dados de retorno
+  user: User;
 }
 
-export const AuthContext = createContext<AuthContextData>(
-  {} as AuthContextData
-);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem("@GoBarber:token");
     const user = localStorage.getItem("@GoBarber:user");
@@ -51,3 +51,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+function useAuth(): AuthContextData {
+  // pra não precisar importar o useContext toda vez, e passar o AuthContext
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    // se o contexto não tiver englobando as páginas vai retorna esse erro
+    throw new Error("useAuth must be used within an authProvider");
+  }
+
+  return context;
+}
+
+export { AuthProvider, useAuth };
