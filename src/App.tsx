@@ -1,22 +1,19 @@
 import React from "react";
 
-import { AuthProvider } from "./hooks/AuthContext";
-
-import GlobalStyles from "./styles/global";
-
-import ToastContainer from "./components/ToastContainer";
+import AppProvider from "./hooks"; // oq envolve todos os contextos/hooks
 
 import SignIn from "./SignIn";
 // import SignUp from "./SignUp";
 
+import GlobalStyles from "./styles/global";
+
 const App: React.FC = () => {
   return (
     <>
-      <AuthProvider>
+      <AppProvider>
         <SignIn />
         {/* <SignUp /> */}
-      </AuthProvider>
-      <ToastContainer />
+      </AppProvider>
       <GlobalStyles />
     </>
   );

@@ -4,7 +4,8 @@ import * as Yup from "yup";
 import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core"; // typagem da referencia do formulario
 
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "../hooks/auth";
+import { useToast } from "../hooks/toast";
 
 import getValidationErrors from "../utils/getValidationsErrors";
 
@@ -24,6 +25,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(
@@ -42,7 +44,7 @@ const SignIn: React.FC = () => {
           abortEarly: false, // pra retornar todos os erros de uma vez
         }); // dados q recebi do input
 
-        signIn({ email: data.email, password: data.password });
+        await signIn({ email: data.email, password: data.password });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           // verifico se o erro que deu é uma instância do Yup
@@ -51,9 +53,10 @@ const SignIn: React.FC = () => {
         }
 
         // disparar um toast
+        addToast();
       }
     },
-    [signIn]
+    [signIn, addToast]
   );
 
   return (
