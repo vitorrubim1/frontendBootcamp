@@ -9,13 +9,13 @@ interface InputWrapperProps {
 }
 
 export const InputWrapper = styled.div<InputWrapperProps>`
-  background: #232129;
+  background: #262626;
   border-radius: 10px;
-  border: 2px solid #233129;
+  border: 2px solid #262626;
   padding: 16px;
   width: 100%;
 
-  color: #666630;
+  color: #878480;
 
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@ export const InputWrapper = styled.div<InputWrapperProps>`
     background: transparent;
 
     &::placeholder {
-      color: #666630;
+      color: #878480;
     }
   }
 
