@@ -7,6 +7,7 @@ import User from "../dtos/IUser";
 interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
 }
 
 interface SignInCredentials {
@@ -45,8 +46,16 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
   }, []);
 
+  // função para deslogar o usuário
+  const signOut = useCallback(() => {
+    localStorage.removeItem("@GoBarber:token");
+    localStorage.removeItem("@GoBarber:user");
+
+    setData({} as AuthState);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
