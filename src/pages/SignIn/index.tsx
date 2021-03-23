@@ -1,20 +1,21 @@
 import React, { useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core"; // typagem da referencia do formulario
 
-import { useAuth } from "../hooks/auth";
-import { useToast } from "../hooks/toast";
+import { useAuth } from "../../hooks/auth";
+import { useToast } from "../../hooks/toast";
 
-import getValidationErrors from "../utils/getValidationsErrors";
+import getValidationErrors from "../../utils/getValidationsErrors";
 
-import LogoImg from "../assets/logo.svg";
+import LogoImg from "../../assets/logo.svg";
 
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
-import { Container, Content, Background } from "./styles";
+import { Container, Content, Background, AnimationContainer } from "./styles";
 
 interface SignInFormData {
   email: string;
@@ -50,6 +51,8 @@ const SignIn: React.FC = () => {
           // verifico se o erro que deu é uma instância do Yup
           const errors = getValidationErrors(error);
           formRef.current?.setErrors(errors); // formRef: referencia do formulario. current: valor das informações
+
+          return; // para não executar o toast caso seja erro de validação
         }
 
         // disparar um toast
@@ -67,33 +70,35 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={LogoImg} alt="Logo GoBarber" />
+        <AnimationContainer>
+          <img src={LogoImg} alt="Logo GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu login</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu login</h1>
 
-          <Input
-            name="email"
-            icon={FiMail}
-            placeholder="E-mail"
-            onChange={() => formRef.current?.setFieldError("email", "")}
-          />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-            onChange={() => formRef.current?.setFieldError("password", "")}
-          />
-          <Button type="submit">Entrar</Button>
+            <Input
+              name="email"
+              icon={FiMail}
+              placeholder="E-mail"
+              onChange={() => formRef.current?.setFieldError("email", "")}
+            />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+              onChange={() => formRef.current?.setFieldError("password", "")}
+            />
+            <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+            <a href="forgot">Esqueci minha senha</a>
+          </Form>
 
-        <a href="login">
-          <FiLogIn />
-          Criar conta
-        </a>
+          <Link to="/signup">
+            <FiLogIn />
+            Criar conta
+          </Link>
+        </AnimationContainer>
       </Content>
 
       <Background />

@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { shade } from "polished";
 
-import signUpBackgroundImg from "../assets/sign-up-background.png";
+import signUpBackgroundImg from "../../assets/sign-up-background.png";
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +9,6 @@ export const Container = styled.div`
   height: 100vh;
   align-items: stretch; //pra que o content e o background tenha 100vh tbm
 `;
-
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,6 +17,26 @@ export const Content = styled.div`
 
   width: 100%;
   max-width: 700px;
+`;
+
+const appearFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const AnimationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: ${appearFromRight} 700ms;
 
   form {
     margin: 80px 0;
@@ -44,7 +63,7 @@ export const Content = styled.div`
 
   > a {
     // ">": somente a tag em si, dentro do content, não estilizar os demais
-    color: #f4ede8;
+    color: #ff9000;
     display: block;
     margin-top: 20px;
     text-decoration: none;
@@ -53,6 +72,7 @@ export const Content = styled.div`
     align-items: center;
 
     transition: color 200ms;
+
     svg {
       margin-right: 10px;
     }
