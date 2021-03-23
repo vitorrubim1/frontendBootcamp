@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
@@ -27,6 +27,7 @@ const SignIn: React.FC = () => {
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(
@@ -45,7 +46,9 @@ const SignIn: React.FC = () => {
           abortEarly: false, // pra retornar todos os erros de uma vez
         }); // dados q recebi do input
 
+        // fazendo login e sendo redirecionado ao dashboard
         await signIn({ email: data.email, password: data.password });
+        history.push("/dashboard");
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           // verifico se o erro que deu é uma instância do Yup
@@ -64,7 +67,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [signIn, addToast]
+    [signIn, addToast, history]
   );
 
   return (

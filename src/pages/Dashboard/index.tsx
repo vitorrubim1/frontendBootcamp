@@ -1,9 +1,11 @@
 import React from "react";
 
-// import { Container } from './styles';
-
 const Dashboard: React.FC = () => {
-  return <h1>DashBoard</h1>;
+  return (
+    <h1 style={{ textAlign: "center", marginTop: "20%" }}>
+      You are logged in 👍️
+    </h1>
+  );
 };
 
 export default Dashboard;
