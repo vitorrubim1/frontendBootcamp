@@ -48,13 +48,24 @@ const SignUp: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu Cadastro</h1>
 
-          <Input name="name" icon={FiUser} placeholder="Nome" />
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
+          <Input
+            name="name"
+            icon={FiUser}
+            placeholder="Nome"
+            onChange={() => formRef.current?.setFieldError("name", "")}
+          />
+          <Input
+            name="email"
+            icon={FiMail}
+            placeholder="E-mail"
+            onChange={() => formRef.current?.setFieldError("email", "")}
+          />
           <Input
             name="password"
             icon={FiLock}
             type="password"
             placeholder="Senha"
+            onChange={() => formRef.current?.setFieldError("password", "")}
           />
           <Button type="submit">Cadastrar</Button>
         </Form>

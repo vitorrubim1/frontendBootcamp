@@ -53,7 +53,12 @@ const SignIn: React.FC = () => {
         }
 
         // disparar um toast
-        addToast();
+        addToast({
+          type: "error",
+          title: "Erro na autenticação",
+          description:
+            "Ocorreu um erro ao fazer login, verifique as credenciais",
+        });
       }
     },
     [signIn, addToast]
@@ -67,12 +72,18 @@ const SignIn: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu login</h1>
 
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
+          <Input
+            name="email"
+            icon={FiMail}
+            placeholder="E-mail"
+            onChange={() => formRef.current?.setFieldError("email", "")}
+          />
           <Input
             name="password"
             icon={FiLock}
             type="password"
             placeholder="Senha"
+            onChange={() => formRef.current?.setFieldError("password", "")}
           />
           <Button type="submit">Entrar</Button>
 
