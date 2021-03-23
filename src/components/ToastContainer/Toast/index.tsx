@@ -12,6 +12,7 @@ import { Container } from "./styles";
 
 interface ToastPropsData {
   toast: ToastProps;
+  style: object;
 }
 
 const icons = {
@@ -20,7 +21,7 @@ const icons = {
   info: <FiInfo size={20} />,
 };
 
-const Toast: React.FC<ToastPropsData> = ({ toast }) => {
+const Toast: React.FC<ToastPropsData> = ({ toast, style }) => {
   const { removeToast } = useToast();
 
   useEffect(() => {
@@ -43,7 +44,11 @@ const Toast: React.FC<ToastPropsData> = ({ toast }) => {
   }, [removeToast, toast.id]);
 
   return (
-    <Container type={toast.type} hasDescription={!!toast.description}>
+    <Container
+      type={toast.type}
+      hasDescription={!!toast.description}
+      style={style}
+    >
       {icons[toast.type || "info"]} {/* icon dinâmico */}
       <div>
         <strong>{toast.title}</strong>
