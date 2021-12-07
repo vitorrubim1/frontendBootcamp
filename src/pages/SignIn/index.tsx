@@ -1,16 +1,16 @@
 import React, { useRef, useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
-import { FormHandles } from "@unform/core"; // typagem da referencia do formulario
+import { FormHandles } from "@unform/core";
+import { Link, useHistory } from "react-router-dom";
+import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 
-import { useAuth } from "../../hooks/auth";
-import { useToast } from "../../hooks/toast";
+import LogoImg from "../../assets/logo.svg";
 
 import getValidationErrors from "../../utils/getValidationsErrors";
 
-import LogoImg from "../../assets/logo.svg";
+import { useAuth } from "../../hooks/auth";
+import { useToast } from "../../hooks/toast";
 
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -29,11 +29,10 @@ const SignIn: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
       try {
-        formRef.current?.setErrors({}); // zerando os erros
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           email: Yup.string()
@@ -44,21 +43,18 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, {
           abortEarly: false, // pra retornar todos os erros de uma vez
-        }); // dados q recebi do input
+        });
 
-        // fazendo login e sendo redirecionado ao dashboard
         await signIn({ email: data.email, password: data.password });
         history.push("/dashboard");
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
-          // verifico se o erro que deu é uma instância do Yup
           const errors = getValidationErrors(error);
-          formRef.current?.setErrors(errors); // formRef: referencia do formulario. current: valor das informações
+          formRef.current?.setErrors(errors);
 
-          return; // para não executar o toast caso seja erro de validação
+          return;
         }
 
-        // disparar um toast
         addToast({
           type: "error",
           title: "Erro na autenticação",
@@ -94,7 +90,7 @@ const SignIn: React.FC = () => {
             />
             <Button type="submit">Entrar</Button>
 
-            <a href="forgot">Esqueci minha senha</a>
+            <Link to="/forgot-password">Esqueci minha senha</Link>
           </Form>
 
           <Link to="/signup">

@@ -5,46 +5,42 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { IconBaseProps } from "react-icons"; // propriedades que um icone pode ter
-import { FiAlertCircle } from "react-icons/fi";
 import { useField } from "@unform/core";
+import { IconBaseProps } from "react-icons";
+import { FiAlertCircle } from "react-icons/fi";
 
 import { InputWrapper, Error } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  // pra que as props herdem todas as propriedades de um input comum
-  name: string; // InputHTMLAttributes: por padrão o name não é obrigatório, na interface eu faço com que seja
+  name: string;
   icon?: React.ComponentType<IconBaseProps>; // React.ComponentType: quando eu recebo um componente como propriedade <IconBaseProps> é as props do icon
 }
 
 const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
-  const inputRef = useRef<HTMLInputElement>(null); // HTMLInputElement: typando pra ter acesso a informação no callback, pra saber se está preenchido ou não
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false); // pra ver ser o input tá preenchido ou não
+  const [isFilled, setIsFilled] = useState(false);
 
-  // lógica de registo do unform
-  const { fieldName, defaultValue, error, registerField } = useField(name); // hook do unform
+  // (hook unform) lógica de registo
+  const { fieldName, defaultValue, error, registerField } = useField(name);
 
   useEffect(() => {
+    // registerField: é o valor do input de fato, dentro do hook do unform
     registerField({
-      // registerField: é o valor do input de fato, dentro do hook do unform
       name: fieldName, // fieldName: pq o unform manipula os nomes e retorna um especifico pra cada
-      ref: inputRef.current, // inputRef.current: referência na DOM
+      ref: inputRef.current,
       path: "value", // tendo o input, aonde de fato encontro o valor
     });
   }, [fieldName, registerField]);
 
-  const handleInputFocus = useCallback(() => {
-    // tornando callback pra ser criada somente uma vez
-    setIsFocused(true);
-  }, []);
+  const handleInputFocus = useCallback(() => setIsFocused(true), []);
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    // pra ver se algum input que perdeu foco, foi preenchido, pra deixar a estilização diferente
-    setIsFilled(!!inputRef.current?.value); // se tiver valor é true, se não é false
+    // Verificar se algum input que perdeu foco. Pra deixar a estilização diferente
+    setIsFilled(!!inputRef.current?.value);
   }, []);
 
   return (

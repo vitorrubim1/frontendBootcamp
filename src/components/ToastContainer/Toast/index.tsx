@@ -32,16 +32,9 @@ const Toast: React.FC<ToastPropsData> = ({ toast, style }) => {
       },
       3000,
       []
-    ); // pro toast sumir em 3s
+    );
 
-    return () => {
-      /*
-        se no useEffect tivermos o retorno de uma hero function, assim que esse componente deixar de existir por qualquer natureza, essa função é executada.
-        eu preciso desse return aqui por causa do timeOut criado acima, ele tem 3s pra executar e fechar o toast;
-        mas se o user fechar antes dos 3s essa função é executada e cancela o timer, justamente é esse o motivo da existência da variável
-      */
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [removeToast, toast.id]);
 
   return (
@@ -50,11 +43,13 @@ const Toast: React.FC<ToastPropsData> = ({ toast, style }) => {
       hasDescription={!!toast.description}
       style={style}
     >
-      {icons[toast.type || "info"]} {/* icon dinâmico */}
+      {icons[toast.type || "info"]}
+
       <div>
         <strong>{toast.title}</strong>
         {toast.description && <p>{toast.description}</p>}
       </div>
+
       <button type="button" onClick={() => removeToast(toast.id)}>
         <FiXCircle size={18} />
       </button>

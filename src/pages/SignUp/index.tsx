@@ -2,8 +2,11 @@ import React, { useCallback, useRef } from "react";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
 import { Link, useHistory } from "react-router-dom";
-import { FormHandles } from "@unform/core"; // typagem da referencia do formulario
+import { FormHandles } from "@unform/core";
 import { FiArrowLeft, FiUser, FiMail, FiLock } from "react-icons/fi";
+
+import LogoImg from "../../assets/logo.svg";
+
 import getValidationErrors from "../../utils/getValidationsErrors";
 
 import { api } from "../../services/api";
@@ -12,7 +15,6 @@ import { useToast } from "../../hooks/toast";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
-import LogoImg from "../../assets/logo.svg";
 import { Container, Content, Background, AnimationContainer } from "./styles";
 
 interface SignUpFormData {
@@ -26,11 +28,10 @@ const SignUp: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(
     async (data: SignUpFormData) => {
       try {
-        formRef.current?.setErrors({}); // zerando os erros
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           name: Yup.string().required("Nome obrigatório"),
@@ -41,10 +42,9 @@ const SignUp: React.FC = () => {
         });
 
         await schema.validate(data, {
-          abortEarly: false, // pra retornar todos os erros de uma vez
-        }); // dados q recebi do input
+          abortEarly: false,
+        });
 
-        // criando um user, redirecionando-o, e mostrando um toast alert
         await api.post("users", data);
         history.push("/");
 
@@ -55,14 +55,12 @@ const SignUp: React.FC = () => {
         });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
-          // verifico se o erro que deu é uma instância do Yup
           const errors = getValidationErrors(error);
-          formRef.current?.setErrors(errors); // formRef: referencia do formulario. current: valor das informações
+          formRef.current?.setErrors(errors);
 
-          return; // para não executar o toast caso seja erro de validação
+          return;
         }
 
-        // disparar um toast
         addToast({
           type: "error",
           title: "Erro no cadastro.",

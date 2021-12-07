@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import ToastContainer from "../components/ToastContainer";
 
 export interface ToastProps {
-  id: string; // o state de toast terá um map, esse id será a key
+  id: string;
   type?: "success" | "error" | "info";
   title: string;
   description?: string;
@@ -18,11 +18,11 @@ interface ToastContextData {
 const ToastContext = createContext<ToastContextData>({} as ToastContextData);
 
 const ToastProvider: React.FC = ({ children }) => {
-  const [messages, setMessages] = useState<ToastProps[]>([]); // informações dos toasts
+  const [messages, setMessages] = useState<ToastProps[]>([]);
 
   const addToast = useCallback(
     ({ title, description, type }: Omit<ToastProps, "id">) => {
-      // Omit<ToastProps, 'id': omitindo o id da interface já que será gerado dinâmicamente
+      // Omit<ToastProps, 'id': omitindo o id da interface já que será gerado dinamicamente
       const id = uuid();
 
       const toast = {
@@ -30,7 +30,7 @@ const ToastProvider: React.FC = ({ children }) => {
         title,
         description,
         type,
-      }; // informações que terá no toast
+      };
 
       setMessages([...messages, toast]);
     },
@@ -38,7 +38,7 @@ const ToastProvider: React.FC = ({ children }) => {
   );
 
   const removeToast = useCallback((id: string) => {
-    setMessages((state) => state.filter((message) => message.id !== id)); // função que recebe todos os itens do estado, e filtra todos que não tenham o id igual ao que é passado pelo parâmetro
+    setMessages((state) => state.filter((message) => message.id !== id));
   }, []);
 
   return (
@@ -52,9 +52,7 @@ const ToastProvider: React.FC = ({ children }) => {
 function useToast(): ToastContextData {
   const context = useContext(ToastContext);
 
-  if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
-  }
+  if (!context) throw new Error("useToast must be used within a ToastProvider");
 
   return context;
 }

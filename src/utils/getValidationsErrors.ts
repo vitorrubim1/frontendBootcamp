@@ -1,4 +1,4 @@
-import { ValidationError } from "yup"; // typagem pro erro
+import { ValidationError } from "yup";
 
 interface Errors {
   [key: string]: string; // como vou usar esse arquivo pra mais validações de erros, a chave do erro pode mudar, então eu crio [key: string] pra que seja dinâmico

@@ -8,26 +8,24 @@ import { ToastProps } from "../../hooks/toast";
 import { Container } from "./styles";
 
 interface ToastContainerProps {
-  messages: ToastProps[]; // ToastProps: tipagem dos toast
+  messages: ToastProps[];
 }
 
 const ToastContainer: React.FC<ToastContainerProps> = ({ messages }) => {
   const messagesWithTransitions = useTransition(
-    messages, // oq ele vai animar, que são as mensagem em si que recebo por parâmetro
-    (message) => message.id, // oq cada mensagem tem de única
+    messages,
+    (message) => message.id,
     {
-      // objeto de animações
-      from: { right: "-120%" }, // sumir na direita, pra esconder
-      enter: { right: "0%" }, // posição do elemento em tela
-      leave: { right: "-120%" }, // quando sair de tela
+      // Objeto de animações
+      from: { right: "-120%" },
+      enter: { right: "0%" },
+      leave: { right: "-120%" },
     }
   );
 
   return (
     <Container>
-      {messagesWithTransitions.map((
-        { item, key, props } // item: as messages do parâmetro, props: a animação
-      ) => (
+      {messagesWithTransitions.map(({ item, key, props }) => (
         <Toast key={key} style={props} toast={item} />
       ))}
     </Container>

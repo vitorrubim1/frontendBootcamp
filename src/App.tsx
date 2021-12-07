@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 
-import AppProvider from "./hooks"; // oq envolve todos os contextos/hooks
+import AppProvider from "./hooks";
 
 import Routes from "./routes";
 
