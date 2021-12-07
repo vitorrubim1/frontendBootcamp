@@ -40,7 +40,7 @@ const Toast: React.FC<ToastPropsData> = ({ toast, style }) => {
   return (
     <Container
       type={toast.type}
-      hasDescription={!!toast.description}
+      hasDescription={Number(!!toast.description)} // pra dom não reclamar
       style={style}
     >
       {icons[toast.type || "info"]}

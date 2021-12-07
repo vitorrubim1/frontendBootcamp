@@ -1,13 +1,16 @@
 import React, { ButtonHTMLAttributes } from "react";
+import { ClipLoader } from "react-spinners";
 
 import { ButtonContainer } from "./styles";
 
-type PropsButton = ButtonHTMLAttributes<HTMLButtonElement>; // como não vou definir nada e nem sobrescrever é um type
+type PropsButton = ButtonHTMLAttributes<HTMLButtonElement> & {
+  loading?: boolean;
+};
 
-const Button: React.FC<PropsButton> = ({ children, ...props }) => {
+const Button: React.FC<PropsButton> = ({ children, loading, ...props }) => {
   return (
     <ButtonContainer type="button" {...props}>
-      {children}
+      {loading ? <ClipLoader size={15} /> : children}
     </ButtonContainer>
   );
 };
