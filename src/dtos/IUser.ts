@@ -1,9 +1,9 @@
 export default interface User {
-  userData: {
-    id: string;
-    name: string;
-    email: string;
-    created_at: string;
-    updated_at: string;
-  };
+  id: string;
+  name: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  avatar: string;
+  avatar_url: string;
 }

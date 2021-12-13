@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 
-import { api } from "../services/api";
-
 import User from "../dtos/IUser";
+
+import { api } from "../services/api";
 
 interface AuthContextData {
   user: User;
@@ -35,9 +35,12 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api.post("sessions", { email, password });
+    const response = await api.post<{ token: string; user: User }>("sessions", {
+      email,
+      password,
+    });
 
-    const { userData: user, token } = response.data; // desacoplando informações que vem da api
+    const { token, user } = response.data; // desacoplando informações que vem da api
 
     localStorage.setItem("@GoBarber:token", token);
     localStorage.setItem("@GoBarber:user", JSON.stringify(user));
