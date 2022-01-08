@@ -24,7 +24,6 @@ export const InputWrapper = styled.div<InputWrapperProps>`
     margin-top: 8px;
   }
 
-  // se o input tiver algum erro
   ${(props) =>
     props.isErrored &&
     css`
@@ -63,7 +62,7 @@ export const InputWrapper = styled.div<InputWrapperProps>`
 `;
 
 export const Error = styled(Tooltip)`
-  height: 20px; //tamanho do icon
+  height: 20px;
   margin-left: 15px;
 
   cursor: pointer;

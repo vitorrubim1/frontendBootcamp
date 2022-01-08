@@ -43,9 +43,7 @@ const AuthProvider: React.FC = ({ children }) => {
       password,
     });
 
-    const { token, user } = response.data; // desacoplando informações que vem da api
-
-    console.log(user);
+    const { token, user } = response.data;
 
     localStorage.setItem("@GoBarber:token", token);
     localStorage.setItem("@GoBarber:user", JSON.stringify(user));

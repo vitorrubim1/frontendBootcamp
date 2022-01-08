@@ -39,7 +39,6 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...props }) => {
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    // Verificar se algum input que perdeu foco. Pra deixar a estilização diferente
     setIsFilled(!!inputRef.current?.value);
   }, []);
 
