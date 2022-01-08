@@ -68,6 +68,7 @@ const ForgotPassword: React.FC = () => {
           title:
             error.response?.data.message || "Erro na recuperação de senha.",
           description:
+            error.response?.data.message ||
             "Ocorreu um erro ao tentar realizar a recuperação de senha, tente novamente.",
         });
       } finally {
