@@ -92,6 +92,7 @@ export const Schedule = styled.div`
     span {
       display: flex;
       align-items: center;
+      text-transform: capitalize;
     }
 
     /* segundo pra frente */
@@ -184,6 +185,10 @@ export const Section = styled.section`
     border-bottom: 1px solid #3e3b47;
     padding-bottom: 16px;
     margin-bottom: 16px;
+  }
+
+  > p {
+    color: #999591;
   }
 `;
 
