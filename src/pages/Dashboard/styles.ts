@@ -191,8 +191,8 @@ export const Appointment = styled.aside`
   display: flex;
   align-items: center;
 
-  // second
-  & + div {
+  // From the second
+  :nth-child(n + 2) {
     margin-top: 16px;
   }
 
@@ -203,6 +203,8 @@ export const Appointment = styled.aside`
     margin-left: auto;
 
     color: #f4ede8;
+
+    width: 4.5rem;
 
     svg {
       color: #ff9000;

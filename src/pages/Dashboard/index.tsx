@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "react-day-picker/lib/style.css";
 import ptBR from "date-fns/locale/pt-BR";
-import { isToday, format } from "date-fns";
+import { isToday, format, parseISO } from "date-fns";
 import { FiClock, FiPower } from "react-icons/fi";
 import DayPicker, { DayModifiers } from "react-day-picker";
 
@@ -33,6 +33,7 @@ interface IMonthAvailabilityItem {
 interface IAppointment {
   id: string;
   date: string;
+  hourFormatted: string;
   user: {
     name: string;
     avatar_url: string;
@@ -91,7 +92,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const getAllAppointment = async () => {
-      const { data } = await api.get("/appointments/me", {
+      const { data } = await api.get<IAppointment[]>("/appointments/me", {
         params: {
           day: selectedDate.getDate(),
           month: selectedDate.getMonth() + 1,
@@ -99,8 +100,14 @@ const Dashboard: React.FC = () => {
         },
       });
 
-      console.log(data);
-      setAppointments(data);
+      const appointmentsFormatted = data.map((appointment) => {
+        return {
+          ...appointment,
+          hourFormatted: format(parseISO(appointment.date), "HH:mm"),
+        };
+      });
+
+      setAppointments(appointmentsFormatted);
     };
 
     getAllAppointment();
@@ -110,7 +117,9 @@ const Dashboard: React.FC = () => {
    *
    */
 
-  // pra não haver muitas renderizações
+  /**
+   * Pra não haver muitas renderizações, abstraio regras pra dentro do useMemo
+   */
   const disabledDays = useMemo(() => {
     const dates = monthAvailability
       .filter((monthDay) => monthDay.available === false)
@@ -131,6 +140,22 @@ const Dashboard: React.FC = () => {
   const selectedWeekDay = useMemo(() => {
     return format(selectedDate, "cccc", { locale: ptBR });
   }, [selectedDate]);
+
+  const morningAppointments = useMemo(() => {
+    return appointments.filter((appointment) => {
+      return parseISO(appointment.date).getHours() < 12;
+    });
+  }, [appointments]);
+
+  const afternoonAppointments = useMemo(() => {
+    return appointments.filter((appointment) => {
+      return parseISO(appointment.date).getHours() >= 12;
+    });
+  }, [appointments]);
+
+  /**
+   *
+   */
 
   return (
     <Container>
@@ -178,35 +203,45 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Manhã</strong>
 
-            <Appointment>
-              <span>
-                <FiClock />
-                08:00
-              </span>
+            {morningAppointments.map((appointment) => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock />
+                  {appointment.hourFormatted}
+                </span>
 
-              <div>
-                <img src="https://github.com/vitorrubim1.png" alt="" />
+                <div>
+                  <img
+                    src={appointment.user.avatar_url || DefaultAvatar}
+                    alt={`Cliente ${appointment.user.name}`}
+                  />
 
-                <strong>Vitor Rubim</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
 
           <Section>
             <strong>Tarde</strong>
 
-            <Appointment>
-              <span>
-                <FiClock />
-                08:00
-              </span>
+            {afternoonAppointments.map((appointment) => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock />
+                  {appointment.hourFormatted}
+                </span>
 
-              <div>
-                <img src="https://github.com/vitorrubim1.png" alt="" />
+                <div>
+                  <img
+                    src={appointment.user.avatar_url || DefaultAvatar}
+                    alt={`Cliente ${appointment.user.name}`}
+                  />
 
-                <strong>Vitor Rubim</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
         </Schedule>
 
