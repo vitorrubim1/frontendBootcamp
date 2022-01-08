@@ -22,8 +22,6 @@ export const HeaderContent = styled.div`
   }
 
   button {
-    margin-left: auto;
-
     background: transparent;
     border: 0;
 
@@ -32,6 +30,21 @@ export const HeaderContent = styled.div`
       width: 20px;
       height: 20px;
     }
+  }
+`;
+
+export const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  margin-left: auto;
+
+  width: 4.5rem;
+
+  hr {
+    background-color: #99959135;
+    width: 0.2px;
+    border: 0;
   }
 `;
 
@@ -60,9 +73,15 @@ export const Profile = styled.div`
       color: #f4ede8;
     }
 
-    strong {
-      color: #ff9000;
+    a {
+      text-decoration: none;
       text-transform: capitalize;
+
+      color: #ff9000;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 `;

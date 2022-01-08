@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "react-day-picker/lib/style.css";
 import ptBR from "date-fns/locale/pt-BR";
-import { FiClock, FiPower } from "react-icons/fi";
+import { FiClock, FiPower, FiUser } from "react-icons/fi";
 import DayPicker, { DayModifiers } from "react-day-picker";
 import { isToday, format, parseISO, isAfter } from "date-fns";
+import { Link, useHistory } from "react-router-dom";
 
 import { useAuth } from "../../hooks/auth";
 
@@ -23,6 +24,7 @@ import {
   Section,
   Appointment,
   Calendar,
+  Actions,
 } from "./styles";
 
 interface IMonthAvailabilityItem {
@@ -42,6 +44,7 @@ interface IAppointment {
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
+  const history = useHistory();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -174,13 +177,23 @@ const Dashboard: React.FC = () => {
 
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
 
-          <button type="button" onClick={signOut}>
-            <FiPower />
-          </button>
+          <Actions>
+            <button type="button" onClick={() => history.push("/profile")}>
+              <FiUser />
+            </button>
+
+            <hr />
+
+            <button type="button" onClick={signOut}>
+              <FiPower />
+            </button>
+          </Actions>
         </HeaderContent>
       </Header>
 
