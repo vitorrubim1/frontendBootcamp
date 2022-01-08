@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, ChangeEvent } from "react";
 import * as Yup from "yup";
 import { Form } from "@unform/web";
 import { Link, useHistory } from "react-router-dom";
@@ -26,7 +26,7 @@ interface ProfileFormData {
 }
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
 
@@ -75,6 +75,35 @@ const Profile: React.FC = () => {
     [addToast, history]
   );
 
+  const handleAvatarChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        try {
+          const data = new FormData();
+          data.append("avatar", event.target.files[0]);
+
+          const { data: updatedUser } = await api.patch("/users/avatar", data);
+
+          updateUser(updatedUser);
+
+          addToast({
+            type: "success",
+            title: "Avatar atualizado com sucesso!",
+          });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          addToast({
+            type: "error",
+            title: error.response?.data.message || "Erro ao atualizar avatar",
+            description:
+              "Ocorreu um erro ao tentar atualizar o seu avatar, tente novamente.",
+          });
+        }
+      }
+    },
+    [addToast, updateUser]
+  );
+
   return (
     <Container>
       <header>
@@ -100,9 +129,16 @@ const Profile: React.FC = () => {
               alt={`Foto do ${user.name}`}
             />
 
-            <button type="button">
+            <label htmlFor="avatar">
               <FiCamera />
-            </button>
+
+              <input
+                type="file"
+                id="avatar"
+                onChange={handleAvatarChange}
+                accept="image/jpg image/jpeg image/png"
+              />
+            </label>
           </AvatarInput>
 
           <h1>Meu perfil</h1>

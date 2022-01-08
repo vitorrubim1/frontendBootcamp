@@ -54,6 +54,7 @@ const ForgotPassword: React.FC = () => {
           description:
             "Enviamos um email para confirmar a recuperação de senha, cheque sua caixa de entrada.",
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);

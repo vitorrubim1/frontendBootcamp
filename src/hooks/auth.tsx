@@ -8,6 +8,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(userData: User): void;
 }
 
 interface SignInCredentials {
@@ -44,6 +45,8 @@ const AuthProvider: React.FC = ({ children }) => {
 
     const { token, user } = response.data; // desacoplando informações que vem da api
 
+    console.log(user);
+
     localStorage.setItem("@GoBarber:token", token);
     localStorage.setItem("@GoBarber:user", JSON.stringify(user));
 
@@ -59,8 +62,24 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback(
+    (userData) => {
+      if (!userData) return;
+
+      localStorage.setItem("@GoBarber:user", JSON.stringify(userData));
+
+      setData({
+        token: data.token,
+        user: userData,
+      });
+    },
+    [data.token]
+  );
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
